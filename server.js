@@ -1,19 +1,23 @@
 const express = require("express");
-const path = require("path");
-const bodyParser = require('body-parser');
 const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
-const cors=require("cors")
+app.use(express.json());
+
+//may use after if read from form
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+const path = require("path");
+const HTTP_PORT = process.env.PORT||8080;
+
+const cors=require("cors");
+app.use(cors());
 const MoviesDB = require("./modules/moviesDB.js");
 const db = new MoviesDB();
-
-
-app.use(cors());
-app.use(express.json());
 
 //enable the use of .env
 require("dotenv").config();
 
+//listen to 8080
 db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
     app.listen(HTTP_PORT, ()=>{
         console.log(`server listening on: ${HTTP_PORT}`);
@@ -22,7 +26,7 @@ db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
     console.log(err);
 });
 
-//homepage route /
+//homepage route/
 app.get('/', (req, res) => {
     res.json({ message: "API Listening" });
 });
@@ -82,10 +86,6 @@ app.delete("/api/movies/:id",(req,res)=>{
     });
 });
 
-//listen to port
-app.listen(HTTP_PORT, () => {
-    console.log("Ready to handle requests on port " + HTTP_PORT);
-});
 
 //if extension not found
 app.use((req, res) => {
