@@ -77,7 +77,7 @@ module.exports = class MoviesDB {
     let findBy = title ? { title } : {};
 
     if (+page && +perPage) {
-      return this.Movie.find(findBy).sort({ year: +1 }).skip((page - 1) * +perPage).limit(+perPage).exec();
+      return this.Movie.filter(title).sort({ year: +1 }).skip((page - 1) * +perPage).limit(+perPage).exec();
     }
 
     return Promise.reject(new Error('page and perPage query parameters must be valid numbers'));
