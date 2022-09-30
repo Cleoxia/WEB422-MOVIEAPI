@@ -58,7 +58,6 @@ app.get("/api/movies", (req,res) => {
     db.getAllMovies(req.query.page, req.query.perPage, req.query.title)
     .then((movies) => {
             res.status(200).json(movies);
-            console.log(movies);
         })
         .catch((err) => {
             res.status(404).json(err);
